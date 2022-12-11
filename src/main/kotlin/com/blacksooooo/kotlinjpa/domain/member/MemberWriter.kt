@@ -8,11 +8,9 @@ import javax.transaction.Transactional
 @Component
 class MemberWriter(
     private val memberRepository: MemberRepository,
-    private val memberValidator: MemberValidator
 ) {
     @Transactional
     fun save(member: Member): Long {
-        memberValidator.validateDuplicateMemberByName(member.name)
         val savedMember = memberRepository.save(
             MemberEntity(
                 name = member.name,
