@@ -23,18 +23,23 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("com.h2database:h2")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("com.ninja-squad:springmockk:2.0.3")
+	testImplementation("io.kotest:kotest-runner-junit5:5.4.2")
+	testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
 }
 
-tasks.withType<KotlinCompile> {
-	kotlinOptions {
-		freeCompilerArgs = listOf("-Xjsr305=strict")
-		jvmTarget = "11"
+tasks {
+	withType<Test> {
+		useJUnitPlatform()
 	}
-}
-
-tasks.withType<Test> {
-	useJUnitPlatform()
+	withType<KotlinCompile> {
+		kotlinOptions {
+			freeCompilerArgs = listOf("-Xjsr305=strict")
+			jvmTarget = "11"
+		}
+	}
 }
 
 allOpen {
