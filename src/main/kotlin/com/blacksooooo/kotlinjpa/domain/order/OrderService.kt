@@ -1,6 +1,7 @@
 package com.blacksooooo.kotlinjpa.domain.order
 
-import com.blacksooooo.kotlinjpa.common.enum.OrderStatus
+import com.blacksooooo.kotlinjpa.common.enum.DeliveryStatus
+import com.blacksooooo.kotlinjpa.domain.delivery.DeliveryReader
 import com.blacksooooo.kotlinjpa.domain.delivery.DeliveryWriter
 import com.blacksooooo.kotlinjpa.domain.item.ItemReader
 import com.blacksooooo.kotlinjpa.domain.member.MemberReader
@@ -12,6 +13,7 @@ class OrderService(
     private val memberReader: MemberReader,
     private val itemReader: ItemReader,
     private val deliveryWriter: DeliveryWriter,
+    private val deliveryReader: DeliveryReader,
     private val orderWriter: OrderWriter,
     private val orderItemWriter: OrderItemWriter,
     private val orderReader: OrderReader,
@@ -26,7 +28,8 @@ class OrderService(
 
     fun cancelOrder(orderId: Long) {
         val order = orderReader.findOneById(orderId)
-        orderStatusValidate(order.status)
+        val delivery = deliveryReader.findOneById(order.id)
+        orderStatusValidate(delivery.status)
         order.cancelOrder()
         addItemsStockByOrderId(order.id)
     }
@@ -37,8 +40,8 @@ class OrderService(
         orderItemWriter.save(item.id, orderId, item.price, count)
     }
 
-    private fun orderStatusValidate(status: OrderStatus) {
-        if (status == OrderStatus.CANCELED) throw NotDeliveryCanceledException()
+    private fun orderStatusValidate(status: DeliveryStatus) {
+        if (status == DeliveryStatus.COMP) throw NotDeliveryCanceledException()
     }
 
     private fun addItemsStockByOrderId(orderId: Long) {
