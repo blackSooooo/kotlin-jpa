@@ -20,4 +20,7 @@ class DeliveryEntity (
         get() = address.street
     val zipCode: String
         get() = address.zipCode
+    constructor(city: String, street: String, zipCode: String): this(
+        DeliveryStatus.READY, AddressEntity(city, street, zipCode)
+    )
 }
