@@ -10,7 +10,7 @@ import javax.persistence.*
 class DeliveryEntity (
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    val status: DeliveryStatus,
+    var status: DeliveryStatus,
     @Embedded
     val address: AddressEntity
 ) : BaseEntity() {
