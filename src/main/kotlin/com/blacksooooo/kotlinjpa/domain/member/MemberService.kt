@@ -9,6 +9,7 @@ class MemberService(
     private val memberValidator: MemberValidator
 ) {
     fun join(member: CreateMemberRequest): Long {
+        println("TEst")
         memberValidator.validateDuplicateMemberByName(member.name)
         return memberWriter.save(toMember(member))
     }
